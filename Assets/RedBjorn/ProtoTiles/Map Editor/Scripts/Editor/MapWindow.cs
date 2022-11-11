@@ -216,6 +216,12 @@ namespace RedBjorn.ProtoTiles
                     }
                 }
             }
+
+            if (GUILayout.Button("Create 101x101 map", GUILayout.MaxWidth(MapWindowSettings.WindowMinSize.x - 6 * Border)))
+            {
+                Map.MapCreate(101, 101);
+            }
+
             GUILayout.Space(10f);
             var guiEnabled = GUI.enabled;
             GUI.enabled = Map;
