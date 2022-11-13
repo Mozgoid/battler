@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
             foreach (var unitConf in t.Units)
             {
                 var newUnit = Instantiate(unitConf.Prefab, this.transform);
-                newUnit.Init(unitConf, t);
+                newUnit.Init(unitConf, t, _mapHolder.MapEntity);
 
                 var tile = allMapTiles[_units.Count];
                 newUnit.transform.position = _mapHolder.MapEntity.WorldPosition(tile);
