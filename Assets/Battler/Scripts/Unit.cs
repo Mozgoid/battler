@@ -9,7 +9,21 @@ public class Unit : MonoBehaviour
     public TeamConfig Team { get; private set; }
     public UnitConfig UnitConfig { get; private set; }
 
-    public int Hp { get; private set; }
+    private int _hp;
+    public int Hp 
+    {
+        get => _hp;
+        private set
+        {
+            if (value < _hp)
+            {
+                _animator.SetTrigger("TakeDamage");
+            }
+            _hp = value;
+            _animator.SetInteger("Hp", _hp);
+        } 
+    }
+
     public bool IsAlive => Hp > 0;
     private int _ticksWithoutMove = 0;
     private int _ticksWithoutAttack = 0;
@@ -43,6 +57,7 @@ public class Unit : MonoBehaviour
 
     private MapEntity Map { get; set; }
     [SerializeField] Renderer _body;
+    [SerializeField] Animator _animator;
 
     public void Init(UnitConfig unitConfig, TeamConfig teamConfig, MapEntity map, Vector3Int tilePos, GameManager gameManager)
     {
@@ -139,7 +154,7 @@ public class Unit : MonoBehaviour
                 var distance = Map.Distance(CurrentTile, closestEnemy.CurrentTile);
                 if (distance <= UnitConfig.AttackDistance)
                 {
-                    // TODO: attack animation
+                    _animator.SetTrigger("Attack");
                     _ticksWithoutAttack = 0;
                     closestEnemy.Hp -= UnitConfig.AttackPower;
                 }
