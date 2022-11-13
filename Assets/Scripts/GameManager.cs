@@ -1,14 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using RedBjorn.ProtoTiles;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private BattleEvents _battleEvents;
-    [SerializeField] private TeamConfig[] _teams;
+    [SerializeField] BattleEvents _battleEvents;
+    [SerializeField] TeamConfig[] _teams;
+    [SerializeField] MapEntity _map;
 
     int _seed;
     List<Unit> _units = new List<Unit>();
+
+    public void Start()
+    {
+        Init(0);
+    }
 
     public void Init(int seed)
     {
@@ -26,18 +34,24 @@ public class GameManager : MonoBehaviour
         }
         _units.Clear();
 
+        var allMapTiles = _map.TileKeys.ToList();
+        allMapTiles.Shuffle();
+
         foreach (var t in _teams)
         {
             foreach (var unitConf in t.Units)
             {
                 var newUnit = Instantiate(unitConf.Prefab, this.transform);
                 newUnit.Init(unitConf, t);
-                //TODO: set position
+
+                var tile = allMapTiles[_units.Count];
+                newUnit.transform.position = _map.WorldPosition(tile);
+
                 _units.Add(newUnit);
             }
         }
 
-        //shuffle
+        _units.Shuffle();
     }
 
     public void Restart()

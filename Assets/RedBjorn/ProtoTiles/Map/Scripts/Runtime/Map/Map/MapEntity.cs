@@ -11,6 +11,7 @@ namespace RedBjorn.ProtoTiles
     {
         float TileSize = 1f;
         TileDictionary Tiles = new TileDictionary();
+        public IEnumerable<Vector3Int> TileKeys => Tiles.Select((kv) => kv.Key);
         Vector3 Eps;
         Vector3[] Vertices;
         public Vector3[] VerticesInner;
