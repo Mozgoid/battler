@@ -11,7 +11,7 @@ namespace RedBjorn.ProtoTiles.Example
 
         public MapEntity MapEntity { get; private set; }
 
-        void Start()
+        void Awake()
         {
             if (!MapView)
             {
@@ -27,18 +27,18 @@ namespace RedBjorn.ProtoTiles.Example
                 Log.E("Can't find MapView. Random errors can occur");
             }
 
-            if (!Unit)
-            {
-                Unit = GameObject.FindObjectOfType<UnitMove>();
-            }
-            if (Unit)
-            {
-                Unit.Init(MapEntity);
-            }
-            else
-            {
-                Log.E("Can't find any Unit. Example level start incorrect");
-            }
+            // if (!Unit)
+            // {
+            //     Unit = GameObject.FindObjectOfType<UnitMove>();
+            // }
+            // if (Unit)
+            // {
+            //     Unit.Init(MapEntity);
+            // }
+            // else
+            // {
+            //     Log.E("Can't find any Unit. Example level start incorrect");
+            // }
         }
 
         void Update()

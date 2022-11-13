@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using RedBjorn.ProtoTiles;
+using RedBjorn.ProtoTiles.Example;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] BattleEvents _battleEvents;
     [SerializeField] TeamConfig[] _teams;
-    [SerializeField] MapEntity _map;
+    [SerializeField] ExampleStart _mapHolder;
 
     int _seed;
     List<Unit> _units = new List<Unit>();
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour
         }
         _units.Clear();
 
-        var allMapTiles = _map.TileKeys.ToList();
+        var allMapTiles = _mapHolder.MapEntity.TileKeys.ToList();
         allMapTiles.Shuffle();
 
         foreach (var t in _teams)
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
                 newUnit.Init(unitConf, t);
 
                 var tile = allMapTiles[_units.Count];
-                newUnit.transform.position = _map.WorldPosition(tile);
+                newUnit.transform.position = _mapHolder.MapEntity.WorldPosition(tile);
 
                 _units.Add(newUnit);
             }
