@@ -10,9 +10,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] BattleEvents _battleEvents;
     [SerializeField] TeamConfig[] _teams;
     [SerializeField] ExampleStart _mapHolder;
+    [SerializeField] float _tickTime = 0.1f;
 
     int _seed;
     List<Unit> _units = new List<Unit>();
+    public IReadOnlyList<Unit> AllUnits => _units;
 
     public void Start()
     {
@@ -25,6 +27,9 @@ public class GameManager : MonoBehaviour
         Random.InitState(seed);
         ClearAndGenerateNewBattle();
         _battleEvents.OnBattleStarted();
+
+        StopAllCoroutines();
+        StartCoroutine(Ticks());
     }
 
     void ClearAndGenerateNewBattle()
@@ -43,10 +48,8 @@ public class GameManager : MonoBehaviour
             foreach (var unitConf in t.Units)
             {
                 var newUnit = Instantiate(unitConf.Prefab, this.transform);
-                newUnit.Init(unitConf, t, _mapHolder.MapEntity);
+                newUnit.Init(unitConf, t, _mapHolder.MapEntity, allMapTiles[_units.Count], this);
 
-                var tile = allMapTiles[_units.Count];
-                newUnit.transform.position = _mapHolder.MapEntity.WorldPosition(tile);
 
                 _units.Add(newUnit);
             }
@@ -60,26 +63,36 @@ public class GameManager : MonoBehaviour
         Init(_seed);
     }
 
-    void Tick()
+    IEnumerator Ticks()
     {
-        DoMove();
-        DoAttack();
-        TryFinishGame();
+        while (!TryFinishGame())
+        {
+            DoMove();
+            DoAttack();
+            yield return new WaitForSeconds(_tickTime);
+        }
     }
 
 
     void DoMove()
     {
-
+        foreach (var u in _units)
+        {
+            u.TryMove();
+        }
     }
 
     void DoAttack()
     {
-
+        foreach (var u in _units)
+        {
+            u.TryAttack();
+        }
     }
 
-    void TryFinishGame()
+    bool TryFinishGame()
     {
+        return false;
         // _battleEvents.OnBattleEnded(-1);
     }
 }

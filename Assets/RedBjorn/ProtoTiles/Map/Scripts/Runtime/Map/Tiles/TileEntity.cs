@@ -7,7 +7,7 @@ namespace RedBjorn.ProtoTiles
     public partial class TileEntity : INode
     {
         int CachedMovabeArea;
-        int ObstacleCount;
+        public int ObstacleCount { get; set; }
         public TileData Data { get; private set; }
         public TilePreset Preset { get; private set; }
         MapRules Rules;
