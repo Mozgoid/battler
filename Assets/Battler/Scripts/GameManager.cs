@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        Init(0);
+        _battleEvents.BattleStartRequested += Init;
     }
 
     public void Init(int seed)

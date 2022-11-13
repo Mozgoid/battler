@@ -12,6 +12,7 @@ namespace RedBjorn.ProtoTiles
             Grid.transform.SetParent(transform);
             Grid.transform.localPosition = Vector3.zero;
             map.CreateGrid(Grid.transform);
+            GridEnable(false);
         }
 
         public void GridEnable(bool enable)

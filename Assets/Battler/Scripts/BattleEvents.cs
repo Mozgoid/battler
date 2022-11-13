@@ -6,6 +6,7 @@ using UnityEngine.Events;
 [CreateAssetMenu]
 public class BattleEvents : ScriptableObject
 {
+    public UnityAction<int> BattleStartRequested = (seed) => Debug.Log($"BattleStartRequested with seed {seed}");
     public UnityAction OnBattleStarted = () => Debug.Log("battle started");
-    public UnityAction<int> OnBattleEnded = (winnerTeam) => Debug.Log($"battle has ended. Winner: {winnerTeam}");
+    public UnityAction<TeamConfig> OnBattleEnded = (winnerTeam) => Debug.Log($"battle has ended. Winner: {winnerTeam}");
 }

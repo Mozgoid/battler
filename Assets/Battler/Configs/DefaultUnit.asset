@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 5673386434509009221, guid: d0a6155e3d9fc45718e33dea9f944503, type: 3}
   AttackPower: 3
-  AttackDistance: 30
+  AttackDistance: 4
   TicksToMove: 1
   TicksToAttack: 10
   MinHp: 2
