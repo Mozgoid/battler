@@ -23,7 +23,7 @@ public class StartMenu : MonoBehaviour
 
     void OnBattleEnded(TeamConfig winner)
     {
-        _winner.text = winner == null ? "Draw" : $":{winner.name} has won";
+        _winner.text = winner == null ? "Draw" : $"{winner.name} has won";
         gameObject.SetActive(true);
     }
 }

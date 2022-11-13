@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] ExampleStart _mapHolder;
     [SerializeField] float _tickTime = 0.1f;
 
+    HashSet<TeamConfig> _aliveTeams = new HashSet<TeamConfig>();
     int _seed;
     List<Unit> _units = new List<Unit>();
     public IReadOnlyList<Unit> AllUnits => _units;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
         Random.InitState(seed);
         ClearAndGenerateNewBattle();
         _battleEvents.OnBattleStarted();
+        UpdateAliveTeams();
 
         StopAllCoroutines();
         StartCoroutine(Ticks());
@@ -90,9 +92,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void UpdateAliveTeams()
+    {
+        _aliveTeams.Clear();
+        foreach (var u in _units)
+        {
+            if (u.IsAlive)
+            {
+                _aliveTeams.Add(u.Team);
+            }
+        }
+    }
+
     bool TryFinishGame()
     {
-        return false;
-        // _battleEvents.OnBattleEnded(-1);
+        UpdateAliveTeams();
+        if (_aliveTeams.Count > 1)
+            return false;
+        
+        foreach (var team in _teams)
+        {
+            if (_aliveTeams.Contains(team))
+            {
+                _battleEvents.OnBattleEnded(team);
+                return true;
+            }
+        }
+
+        _battleEvents.OnBattleEnded(null);
+        return true;
     }
 }
